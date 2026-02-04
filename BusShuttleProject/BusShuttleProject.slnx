@@ -1,2 +1,4 @@
 <Solution>
+  <Project Path="BusShuttle.Tests/BusShuttle.Tests.csproj" />
+  <Project Path="BusShuttle/BusShuttle.csproj" />
 </Solution>
