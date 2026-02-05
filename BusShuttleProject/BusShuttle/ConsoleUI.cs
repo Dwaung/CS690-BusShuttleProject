@@ -69,42 +69,32 @@ public class ConsoleUI{
 
 
         } else if (mode == "manager") {
-            string command;
-            do {
-                command = AnsiConsole.Prompt(
-                                    new SelectionPrompt<string>()
-                                    .Title("What do you want to do?")
-                                    .AddChoices(new[] {
-                                            "add stop", "delete stop", "list stops", "end"
-                                    }));
+    string command;
+    do {
+        command = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("What do you want to do?")
+                .AddChoices(new[] { "add stop", "delete stop", "list stops", "end" }));
 
-                if (command == "add stop") {
-            var newStopName = AnsiConsole.Prompt(new TextPrompt<string>("Enter new stop name:"));
+        if (command == "add stop") {
+            var newStopName = AnsiConsole.Ask<string>("Enter a new stop name:");
             dataManager.AddStop(new Stop(newStopName));
-         
-
-        } else if (command == "delete stop") {
-
-            Stop selectedStop = AnsiConsole.Prompt(
-                                new SelectionPrompt<Stop>()
-                                .Title("Select a stop")
-                                .AddChoices(dataManager.Stops));
-            
-            dataManager.RemoveStop(selectedStop);
-            
-
-        } else if (command == "list stops") {
-
+        } 
+        else if (command == "delete stop") {
+            var stopToDelete = AnsiConsole.Prompt(
+                new SelectionPrompt<Stop>()
+                    .Title("Select a stop to delete:")
+                    .AddChoices(dataManager.Stops));
+            dataManager.RemoveStop(stopToDelete);
+        } 
+        else if (command == "list stops") {
             var table = new Table();
-
             table.AddColumn("Stop Name");
-
             foreach (var stop in dataManager.Stops) {
                 table.AddRow(stop.Name);
             }
-                AnsiConsole.Write(table);  
-        }   
-
+            AnsiConsole.Write(table);
+        }
     } while (command != "end");
 }
 
