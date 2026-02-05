@@ -69,10 +69,9 @@ public class ConsoleUI{
         }
     }
     
-    public static string AskForInput(string message)
+    public static string AskForInput(string message) 
     {
         Console.Write(message);
-        return Console.ReadLine();
+        return Console.ReadLine() ?? string.Empty; 
     }
-    
-}
+} 
