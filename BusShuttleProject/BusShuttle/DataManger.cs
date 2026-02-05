@@ -2,6 +2,9 @@ namespace BusShuttle;
 
 public class DataManager
 {
+
+    public List<Stop> Stops { get; set; } = new List<Stop>();
+
     FileSaver fileSaver;
 
     public List<Loop> Loops { get; }
@@ -41,4 +44,17 @@ public class DataManager
         this.PassengerDataEntries.Add(data); 
         this.fileSaver.AppendData(data);
     }
+
+    public void AddStop(Stop stop) {
+        Stops.Add(stop);
+        SynchronizeStops();
+    }
+
+    public void SynchronizeStops() {
+        File.Delete("stops.txt");
+        foreach (var stop in Stops) {
+            File.AppendAllText("stops.txt", stop.Name + Environment.NewLine);
+        }
+    }
+}
 }
