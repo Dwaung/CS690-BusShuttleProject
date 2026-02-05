@@ -1,12 +1,7 @@
-Based on the video and the code visible at the 17:06 mark in your screenshot, here is the full code for the DataManagerTests.cs file.
-
-DataManagerTests.cs Implementation
-This test class verifies that the DataManager correctly reads an initial list of stops from a file and updates correctly when a new stop is added.
-
-C#
 namespace BusShuttle.Tests;
 
 using BusShuttle;
+using Xunit;
 
 public class DataManagerTests
 {
