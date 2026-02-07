@@ -13,7 +13,6 @@ public class DataManager
     {
         fileSaver = new FileSaver("passenger-data.txt");
 
-        // --- Load Loops and Stops ---
         Loops = new List<Loop>();
         Loops.Add(new Loop("Red"));
         Loops.Add(new Loop("Green"));
@@ -32,16 +31,13 @@ public class DataManager
         Loops[0].Stops.Add(Stops[3]);
         Loops[0].Stops.Add(Stops[4]);
 
-        // --- Integrated Driver Loading Logic ---
         Drivers = LoadDrivers(); 
-        // If the file is empty or new, add your default Star Wars drivers
         if (Drivers.Count == 0)
         {
             Drivers.Add(new Driver("Luke Skywalker"));
             Drivers.Add(new Driver("Han Solo"));
         }
 
-        // --- Load Passenger Data ---
         PassengerData = new List<PassengerData>();
         if (File.Exists("passenger-data.txt")){
             var passengerFileContent = File.ReadAllLines("passenger-data.txt");
