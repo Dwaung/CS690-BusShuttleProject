@@ -28,5 +28,15 @@ public class FileSaver{
     }
     File.WriteAllLines("stops.txt", lines);
     }
-    
+
+    public static void SaveDrivers(List<Driver> drivers) 
+    {
+        List<string> lines = new List<string>();
+        foreach (var driver in drivers)
+        {
+            lines.Add(driver.Name);
+        }
+        File.WriteAllLines("drivers.txt", lines);
+    }
 }
+    
