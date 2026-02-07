@@ -6,15 +6,14 @@ public class DataManager
 
     public List<Loop> Loops { get; }
     public List<Stop> Stops { get; }
-    public List<Driver> Drivers { get; }
+    public List<Driver> Drivers { get; } // Kept the original property
     public List<PassengerData> PassengerData { get; set; }
 
     public DataManager()
     {
-
-        
         fileSaver = new FileSaver("passenger-data.txt");
 
+        // --- Load Loops and Stops ---
         Loops = new List<Loop>();
         Loops.Add(new Loop("Red"));
         Loops.Add(new Loop("Green"));
@@ -33,10 +32,16 @@ public class DataManager
         Loops[0].Stops.Add(Stops[3]);
         Loops[0].Stops.Add(Stops[4]);
 
-        Drivers = new List<Driver>();
-        Drivers.Add(new Driver("Luke Skywalker"));
-        Drivers.Add(new Driver("Han Solo"));
+        // --- Integrated Driver Loading Logic ---
+        Drivers = LoadDrivers(); 
+        // If the file is empty or new, add your default Star Wars drivers
+        if (Drivers.Count == 0)
+        {
+            Drivers.Add(new Driver("Luke Skywalker"));
+            Drivers.Add(new Driver("Han Solo"));
+        }
 
+        // --- Load Passenger Data ---
         PassengerData = new List<PassengerData>();
         if (File.Exists("passenger-data.txt")){
             var passengerFileContent = File.ReadAllLines("passenger-data.txt");
@@ -57,23 +62,56 @@ public class DataManager
 
     public void AddNewPassengerData(PassengerData data)
     {
-    this.PassengerData.Add(data);
-    this.fileSaver.AppendData(data);
+        this.PassengerData.Add(data);
+        this.fileSaver.AppendData(data);
     }
     
     public void AddStop(Stop stop)
     {
-    Stops.Add(stop);
-    FileSaver.SaveStops(Stops); 
+        Stops.Add(stop);
+        FileSaver.SaveStops(Stops); 
     }
 
     public void RemoveStop(Stop stop)
-    {  
-    var stopToRemove = Stops.Find(s => s.Name == stop.Name);
-    if (stopToRemove != null)
     {
-        Stops.Remove(stopToRemove);
-        FileSaver.SaveStops(Stops);
+        var stopToRemove = Stops.Find(s => s.Name == stop.Name);
+        if (stopToRemove != null)
+        {
+            Stops.Remove(stopToRemove);
+            FileSaver.SaveStops(Stops);
+        }
+    } 
+
+    public void AddDriver(string driverName)
+    {
+        var newDriver = new Driver(driverName);
+        Drivers.Add(newDriver);
+        FileSaver.SaveDrivers(Drivers); 
     }
-}
+
+    private List<Driver> LoadDrivers()
+    {
+        var drivers = new List<Driver>();
+        if (File.Exists("drivers.txt"))
+        {
+            var lines = File.ReadAllLines("drivers.txt");
+            foreach (var line in lines)
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    drivers.Add(new Driver(line));
+                }
+            }
+        }
+        return drivers;
+    }
+    public void RemoveDriver(Driver driver)
+    {
+        var driverToRemove = Drivers.Find(d => d.Name == driver.Name);
+        if (driverToRemove != null)
+        {
+            Drivers.Remove(driverToRemove);
+            FileSaver.SaveDrivers(Drivers); 
+        }
+    }
 }
